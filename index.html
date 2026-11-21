@@ -1,901 +1,861 @@
 <!DOCTYPE html>
-<html lang="es" class="h-full bg-slate-100">
+<html lang="es" class="h-full">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Servidores Web y Hosting en Internet</title>
-    <!-- Tailwind CSS CDN -->
+    
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
                     colors: {
-                        tech: {
+                        brand: {
                             50: '#f0f9ff',
                             100: '#e0f2fe',
                             500: '#0284c7',
-                            600: '#2563eb',
-                            700: '#1d4ed8',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            accent: '#2563eb'
                         }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
                     }
                 }
             }
         }
     </script>
-    <!-- Google Fonts Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            -webkit-tap-highlight-color: transparent;
+        /* Custom scrollbar styling for directory */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
         }
-        /* Touch friendly smooth inner slide scrolling */
-        .slide-content-scroll {
-            scrollbar-width: thin;
-            scrollbar-color: #cbd5e1 transparent;
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
         }
-        .slide-content-scroll::-webkit-scrollbar {
-            width: 4px;
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
         }
-        .slide-content-scroll::-webkit-scrollbar-thumb {
-            background-color: #cbd5e1;
-            border-radius: 9999px;
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
         }
-        /* Custom slide animation */
-        .slide-enter {
-            animation: slideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(12px) scale(0.99);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+        /* Touch scroll isolation */
+        .isolate-scroll {
+            touch-action: pan-y;
+            overscroll-behavior: contain;
         }
     </style>
 </head>
-<body class="h-full flex flex-col justify-center items-center text-slate-900 bg-slate-100 antialiased selection:bg-sky-100 selection:text-sky-700">
+<body class="bg-white text-slate-900 font-sans h-full flex flex-col justify-between overflow-hidden antialiased select-none">
 
-    <!-- Container wrapper: emulate mobile canvas on desktop while being 100% fluid on mobile devices -->
-    <main class="w-full max-w-md md:max-w-2xl lg:max-w-4xl h-full md:h-[92vh] bg-white md:rounded-3xl shadow-2xl md:border md:border-slate-200 flex flex-col relative overflow-hidden transition-all">
+    
+    <div class="w-full bg-slate-100 h-1.5 fixed top-0 left-0 z-50">
+        <div id="progressBar" class="bg-gradient-to-r from-sky-600 to-blue-600 h-1.5 transition-all duration-300 ease-out" style="width: 9.09%;"></div>
+    </div>
 
-        <!-- Top Progress Bar -->
-        <div class="w-full bg-slate-100 h-1.5 relative z-30">
-            <div id="progressBar" class="h-full bg-gradient-to-r from-sky-500 to-blue-600 transition-all duration-300 ease-out" style="width: 9.09%;"></div>
-        </div>
-
-        <!-- Top Header Minimal Bar -->
-        <header class="flex items-center justify-between px-5 py-3 border-b border-slate-100 bg-white/90 backdrop-blur-md z-20">
-            <div class="flex items-center space-x-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-sky-500 animate-pulse"></span>
-                <span class="text-xs font-semibold tracking-wider text-slate-500 uppercase">Servidores & Hosting</span>
+    
+    <main class="flex-1 relative w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-20 flex items-center justify-center overflow-hidden">
+        
+        
+        <section class="slide absolute inset-0 pt-8 pb-20 px-4 sm:px-8 flex flex-col items-center justify-center text-center transition-opacity duration-300 opacity-100 z-10 overflow-y-auto">
+            <div class="max-w-3xl mx-auto space-y-6 my-auto">
+                
+                <div class="w-32 h-32 sm:w-44 sm:h-44 mx-auto text-sky-600 bg-sky-50 rounded-3xl p-6 border border-sky-100 shadow-sm flex items-center justify-center">
+                    <svg class="w-full h-full stroke-current" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                        <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                        <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                        <line x1="6" y1="18" x2="6.01" y2="18"></line>
+                        <line x1="10" y1="6" x2="18" y2="6"></line>
+                        <line x1="10" y1="18" x2="18" y2="18"></line>
+                        <circle cx="18" cy="18" r="3" fill="#2563eb" class="animate-pulse"></circle>
+                    </svg>
+                </div>
+                
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-xs font-semibold text-sky-700 uppercase tracking-wider">
+                    Guía Educativa Interactiva
+                </div>
+                
+                <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
+                    Servidores Web y Hosting <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-blue-600">en Internet</span>
+                </h1>
+                
+                <p class="text-base sm:text-xl text-slate-600 max-w-2xl mx-auto font-normal leading-relaxed">
+                    Conceptos clave, arquitecturas, directorio global de proveedores y la guía definitiva para elegir la mejor infraestructura digital.
+                </p>
             </div>
-            <button id="openModalBtn" title="Ver índice de diapositivas" class="flex items-center space-x-1 px-3 py-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-full text-xs font-medium text-slate-700 active:scale-95 transition-all">
-                <svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path>
-                </svg>
-                <span>Índice</span>
-            </button>
-        </header>
-
-        <!-- Slide Presentation Viewport Area -->
-        <section id="slideContainer" class="flex-1 relative overflow-hidden bg-white">
-
-            <!-- SLIDE 1: Portada -->
-            <article class="slide-item absolute inset-0 flex flex-col p-6 overflow-y-auto slide-content-scroll slide-enter" data-slide="1">
-                <div class="my-auto flex flex-col items-center text-center space-y-6">
-                    <!-- Tech SVG Badge -->
-                    <div class="w-24 h-24 md:w-32 md:h-32 bg-sky-50 border border-sky-100 rounded-3xl p-4 shadow-sm flex items-center justify-center text-sky-600">
-                        <svg class="w-full h-full" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="15" y="20" width="70" height="24" rx="6" fill="#0284C7" fill-opacity="0.1" stroke="#0284C7" stroke-width="4"/>
-                            <circle cx="28" cy="32" r="3" fill="#0284C7"/>
-                            <circle cx="38" cy="32" r="3" fill="#38BDF8"/>
-                            <line x1="55" y1="32" x2="73" y2="32" stroke="#0284C7" stroke-width="4" stroke-linecap="round"/>
-                            
-                            <rect x="15" y="56" width="70" height="24" rx="6" fill="#2563EB" fill-opacity="0.1" stroke="#2563EB" stroke-width="4"/>
-                            <circle cx="28" cy="68" r="3" fill="#2563EB"/>
-                            <circle cx="38" cy="68" r="3" fill="#60A5FA"/>
-                            <line x1="55" y1="68" x2="73" y2="68" stroke="#2563EB" stroke-width="4" stroke-linecap="round"/>
-                            
-                            <path d="M50 8C35 8 28 16 28 16" stroke="#0284C7" stroke-width="3" stroke-dasharray="4 4"/>
-                        </svg>
-                    </div>
-
-                    <div class="space-y-3">
-                        <span class="inline-block px-3 py-1 bg-sky-50 text-sky-700 border border-sky-200 rounded-full text-xs font-semibold tracking-wide uppercase"> Guía Técnica de Arquitectura </span>
-                        <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900 leading-tight">
-                            Servidores Web y Hosting en Internet
-                        </h1>
-                        <p class="text-sm md:text-base text-slate-600 max-w-md mx-auto leading-relaxed">
-                            Arquitecturas de alojamiento, opciones gratuitas, planes de pago y criterios para elegir el mejor servidor.
-                        </p>
-                    </div>
-
-                    <div class="pt-4 flex flex-col items-center space-y-2 text-xs text-slate-400">
-                        <div class="flex items-center space-x-2">
-                            <svg class="w-4 h-4 text-sky-500 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                            </svg>
-                            <span>Desliza lateralmente o presiona Siguiente</span>
-                        </div>
-                    </div>
-                </div>
-            </article>
-
-            <!-- SLIDE 2: ¿Qué es un Servidor Web y el Hosting? -->
-            <article class="slide-item absolute inset-0 hidden flex-col p-6 overflow-y-auto slide-content-scroll" data-slide="2">
-                <div class="max-w-lg mx-auto w-full space-y-6 my-auto">
-                    <div class="text-center space-y-1">
-                        <span class="text-xs font-semibold text-sky-600 tracking-wider uppercase">Fundamentos</span>
-                        <h2 class="text-xl md:text-2xl font-bold text-slate-900">¿Qué es un Servidor Web y Hosting?</h2>
-                    </div>
-
-                    <!-- Server Rack SVG Illustration -->
-                    <div class="w-full h-36 bg-slate-50 border border-slate-200 rounded-2xl flex items-center justify-center p-3">
-                        <svg class="h-full" viewBox="0 0 220 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Rack Box -->
-                            <rect x="40" y="10" width="140" height="80" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="3"/>
-                            <!-- Unit 1 -->
-                            <rect x="50" y="20" width="120" height="16" rx="4" fill="#F1F5F9" stroke="#E2E8F0" stroke-width="2"/>
-                            <circle cx="62" cy="28" r="3" fill="#10B981"/>
-                            <circle cx="72" cy="28" r="3" fill="#0284C7"/>
-                            <line x1="90" y1="28" x2="155" y2="28" stroke="#94A3B8" stroke-width="3" stroke-linecap="round"/>
-                            <!-- Unit 2 -->
-                            <rect x="50" y="42" width="120" height="16" rx="4" fill="#F1F5F9" stroke="#E2E8F0" stroke-width="2"/>
-                            <circle cx="62" cy="50" r="3" fill="#10B981"/>
-                            <circle cx="72" cy="50" r="3" fill="#2563EB"/>
-                            <line x1="90" y1="50" x2="140" y2="50" stroke="#94A3B8" stroke-width="3" stroke-linecap="round"/>
-                            <!-- Unit 3 -->
-                            <rect x="50" y="64" width="120" height="16" rx="4" fill="#F1F5F9" stroke="#E2E8F0" stroke-width="2"/>
-                            <circle cx="62" cy="72" r="3" fill="#3B82F6"/>
-                            <circle cx="72" cy="72" r="3" fill="#F59E0B"/>
-                            <line x1="90" y1="72" x2="160" y2="72" stroke="#94A3B8" stroke-width="3" stroke-linecap="round"/>
-                        </svg>
-                    </div>
-
-                    <!-- Cards -->
-                    <div class="grid grid-cols-1 gap-4">
-                        <!-- Card 1 -->
-                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl shadow-sm hover:border-sky-300 transition-colors">
-                            <div class="flex items-start space-x-3">
-                                <div class="p-2.5 bg-sky-100 text-sky-600 rounded-xl font-bold">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2"></path>
-                                    </svg>
-                                </div>
-                                <div class="space-y-1">
-                                    <h3 class="font-bold text-slate-900 text-base">Servidor Web</h3>
-                                    <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
-                                        Computadora de alto rendimiento conectada 24/7 a Internet que atiende y procesa peticiones de usuarios mediante protocolos HTTP/HTTPS.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card 2 -->
-                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl shadow-sm hover:border-blue-300 transition-colors">
-                            <div class="flex items-start space-x-3">
-                                <div class="p-2.5 bg-blue-100 text-blue-600 rounded-xl font-bold">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-                                    </svg>
-                                </div>
-                                <div class="space-y-1">
-                                    <h3 class="font-bold text-slate-900 text-base">Web Hosting</h3>
-                                    <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
-                                        Alquiler de espacio físico o virtual en el servidor para almacenar los archivos, bases de datos, código y correos de un sitio web.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </article>
-
-            <!-- SLIDE 3: Tipos de Hosting en Internet -->
-            <article class="slide-item absolute inset-0 hidden flex-col p-6 overflow-y-auto slide-content-scroll" data-slide="3">
-                <div class="max-w-xl mx-auto w-full space-y-5 my-auto">
-                    <div class="text-center space-y-1">
-                        <span class="text-xs font-semibold text-sky-600 tracking-wider uppercase">Categorías Principales</span>
-                        <h2 class="text-xl md:text-2xl font-bold text-slate-900">Tipos de Hosting en Internet</h2>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                        <!-- 1. Compartido -->
-                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl shadow-sm flex flex-col justify-between">
-                            <div class="flex items-center space-x-3 mb-2">
-                                <span class="w-8 h-8 rounded-lg bg-sky-100 text-sky-700 font-extrabold text-xs flex items-center justify-center">01</span>
-                                <h3 class="font-bold text-slate-900 text-sm">Hosting Compartido</h3>
-                            </div>
-                            <p class="text-xs text-slate-600 leading-relaxed">
-                                Múltiples sitios alojados en un mismo servidor compartiendo recursos (RAM y CPU).
-                            </p>
-                        </div>
-
-                        <!-- 2. VPS -->
-                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl shadow-sm flex flex-col justify-between">
-                            <div class="flex items-center space-x-3 mb-2">
-                                <span class="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 font-extrabold text-xs flex items-center justify-center">02</span>
-                                <h3 class="font-bold text-slate-900 text-sm">VPS (Servidor Virtual)</h3>
-                            </div>
-                            <p class="text-xs text-slate-600 leading-relaxed">
-                                Recursos garantizados e aislados mediante particiones virtuales independientes.
-                            </p>
-                        </div>
-
-                        <!-- 3. Dedicado -->
-                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl shadow-sm flex flex-col justify-between">
-                            <div class="flex items-center space-x-3 mb-2">
-                                <span class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 font-extrabold text-xs flex items-center justify-center">03</span>
-                                <h3 class="font-bold text-slate-900 text-sm">Servidor Dedicado</h3>
-                            </div>
-                            <p class="text-xs text-slate-600 leading-relaxed">
-                                Servidor físico exclusivo para un solo cliente con control total de la máquina.
-                            </p>
-                        </div>
-
-                        <!-- 4. Cloud Hosting -->
-                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl shadow-sm flex flex-col justify-between">
-                            <div class="flex items-center space-x-3 mb-2">
-                                <span class="w-8 h-8 rounded-lg bg-teal-100 text-teal-700 font-extrabold text-xs flex items-center justify-center">04</span>
-                                <h3 class="font-bold text-slate-900 text-sm">Cloud Hosting</h3>
-                            </div>
-                            <p class="text-xs text-slate-600 leading-relaxed">
-                                Red de servidores interconectados en la nube con alta disponibilidad y escalabilidad.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </article>
-
-            <!-- SLIDE 4: Escala de Crecimiento en Servidores -->
-            <article class="slide-item absolute inset-0 hidden flex-col p-6 overflow-y-auto slide-content-scroll" data-slide="4">
-                <div class="max-w-lg mx-auto w-full space-y-5 my-auto">
-                    <div class="text-center space-y-1">
-                        <span class="text-xs font-semibold text-sky-600 tracking-wider uppercase">Evolución del Proyecto</span>
-                        <h2 class="text-xl md:text-2xl font-bold text-slate-900">Escala de Crecimiento en Servidores</h2>
-                    </div>
-
-                    <!-- Vertical Ladder timeline -->
-                    <div class="relative border-l-2 border-sky-200 ml-4 pl-6 space-y-4">
-                        <!-- Step 1 -->
-                        <div class="relative">
-                            <span class="absolute -left-[35px] top-0.5 w-7 h-7 bg-white border-2 border-sky-500 rounded-full flex items-center justify-center text-xs font-bold text-sky-600">1</span>
-                            <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl">
-                                <h3 class="font-bold text-xs md:text-sm text-slate-900">Hosting Compartido</h3>
-                                <p class="text-xs text-slate-600 mt-0.5">Blogs personales, portafolios y proyectos escolares iniciales.</p>
-                            </div>
-                        </div>
-
-                        <!-- Step 2 -->
-                        <div class="relative">
-                            <span class="absolute -left-[35px] top-0.5 w-7 h-7 bg-white border-2 border-sky-600 rounded-full flex items-center justify-center text-xs font-bold text-sky-600">2</span>
-                            <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl">
-                                <h3 class="font-bold text-xs md:text-sm text-slate-900">WordPress / Reseller Administrado</h3>
-                                <p class="text-xs text-slate-600 mt-0.5">Sitios con CMS optimizado, pymes y agencias de desarrollo web.</p>
-                            </div>
-                        </div>
-
-                        <!-- Step 3 -->
-                        <div class="relative">
-                            <span class="absolute -left-[35px] top-0.5 w-7 h-7 bg-white border-2 border-blue-600 rounded-full flex items-center justify-center text-xs font-bold text-blue-600">3</span>
-                            <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl">
-                                <h3 class="font-bold text-xs md:text-sm text-slate-900">Servidor VPS</h3>
-                                <p class="text-xs text-slate-600 mt-0.5">E-commerce en expansión, aplicaciones web y tráfico medio sostenido.</p>
-                            </div>
-                        </div>
-
-                        <!-- Step 4 -->
-                        <div class="relative">
-                            <span class="absolute -left-[35px] top-0.5 w-7 h-7 bg-white border-2 border-blue-700 rounded-full flex items-center justify-center text-xs font-bold text-blue-700">4</span>
-                            <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl">
-                                <h3 class="font-bold text-xs md:text-sm text-slate-900">Cloud Enterprise / Dedicado</h3>
-                                <p class="text-xs text-slate-600 mt-0.5">Grandes empresas, plataformas SaaS y tráfico masivo continuo.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </article>
-
-            <!-- SLIDE 5: Separador de Sección -->
-            <article class="slide-item absolute inset-0 hidden flex-col p-6 overflow-y-auto slide-content-scroll" data-slide="5">
-                <div class="my-auto text-center space-y-6 max-w-md mx-auto">
-                    <!-- Section Icon -->
-                    <div class="w-20 h-20 mx-auto bg-sky-50 border border-sky-200 rounded-full flex items-center justify-center text-sky-600 shadow-sm">
-                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 15a4 4 0 004 4h9a5 5 0 001-9.999 5.002 5.002 0 00-9.78 2.096A4.001 4.001 0 003 15z"></path>
-                        </svg>
-                    </div>
-
-                    <div class="space-y-3">
-                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-600 border border-slate-200 rounded-full text-xs font-medium tracking-wide"> Módulo 02 </span>
-                        <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 leading-snug">
-                            Hostings Gratuitos: Plataformas y Alcances
-                        </h2>
-                        <p class="text-xs md:text-sm text-slate-500 leading-relaxed">
-                            Exploración de alternativas sin costo para aprendizaje, pruebas de concepto y proyectos estáticos.
-                        </p>
-                    </div>
-
-                    <div class="w-16 h-1 bg-sky-500 mx-auto rounded-full"></div>
-                </div>
-            </article>
-
-            <!-- SLIDE 6: Mejores Hostings Gratuitos Tradicionales -->
-            <article class="slide-item absolute inset-0 hidden flex-col p-6 overflow-y-auto slide-content-scroll" data-slide="6">
-                <div class="max-w-lg mx-auto w-full space-y-5 my-auto">
-                    <div class="text-center space-y-1">
-                        <span class="text-xs font-semibold text-sky-600 tracking-wider uppercase">Hosting Tradicional PHP / MySQL</span>
-                        <h2 class="text-xl md:text-2xl font-bold text-slate-900">Mejores Hostings Gratuitos</h2>
-                    </div>
-
-                    <div class="space-y-3">
-                        <!-- InfinityFree -->
-                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex items-center justify-between shadow-sm">
-                            <div class="space-y-1">
-                                <div class="flex items-center space-x-2">
-                                    <h3 class="font-bold text-slate-900 text-sm md:text-base">InfinityFree</h3>
-                                    <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full">Popular</span>
-                                </div>
-                                <p class="text-xs text-slate-600">5 GB de almacenamiento SSD, ancho de banda ilimitado y sin anuncios forzados.</p>
-                            </div>
-                        </div>
-
-                        <!-- AwardSpace -->
-                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex items-center justify-between shadow-sm">
-                            <div class="space-y-1">
-                                <div class="flex items-center space-x-2">
-                                    <h3 class="font-bold text-slate-900 text-sm md:text-base">AwardSpace</h3>
-                                    <span class="bg-sky-100 text-sky-800 text-[10px] font-bold px-2 py-0.5 rounded-full">Sin Anuncios</span>
-                                </div>
-                                <p class="text-xs text-slate-600">1 GB de disco, 1 dominio + 3 subdominios con soporte técnico básico.</p>
-                            </div>
-                        </div>
-
-                        <!-- ByetHost -->
-                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex items-center justify-between shadow-sm">
-                            <div class="space-y-1">
-                                <div class="flex items-center space-x-2">
-                                    <h3 class="font-bold text-slate-900 text-sm md:text-base">ByetHost</h3>
-                                    <span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded-full">cPanel Vista</span>
-                                </div>
-                                <p class="text-xs text-slate-600">Panel VistaPanel intuitivo, compatibilidad con PHP, MySQL y subdominios.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </article>
-
-            <!-- SLIDE 7: Hostings Gratuitos en la Nube (Estáticos) -->
-            <article class="slide-item absolute inset-0 hidden flex-col p-6 overflow-y-auto slide-content-scroll" data-slide="7">
-                <div class="max-w-xl mx-auto w-full space-y-5 my-auto">
-                    <div class="text-center space-y-1">
-                        <span class="text-xs font-semibold text-sky-600 tracking-wider uppercase">Jamstack & Frontend Moderno</span>
-                        <h2 class="text-xl md:text-2xl font-bold text-slate-900">Hostings Gratuitos en la Nube</h2>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                        <!-- GitHub Pages -->
-                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl shadow-sm">
-                            <div class="flex items-center space-x-2 mb-2">
-                                <svg class="w-5 h-5 text-slate-800" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-                                <h3 class="font-bold text-slate-900 text-sm">GitHub Pages</h3>
-                            </div>
-                            <p class="text-xs text-slate-600 leading-relaxed">
-                                Despliegue directo desde repositorios Git. Ideal para blogs estáticos y portafolios.
-                            </p>
-                        </div>
-
-                        <!-- Vercel -->
-                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl shadow-sm">
-                            <div class="flex items-center space-x-2 mb-2">
-                                <svg class="w-5 h-5 text-slate-900" fill="currentColor" viewBox="0 0 24 24"><path d="M24 22.525H0l12-21.05 12 21.05z"/></svg>
-                                <h3 class="font-bold text-slate-900 text-sm">Vercel</h3>
-                            </div>
-                            <p class="text-xs text-slate-600 leading-relaxed">
-                                Red CDN global ultrarrápida optimizada para frameworks frontend como React, Next.js y Vue.
-                            </p>
-                        </div>
-
-                        <!-- Netlify -->
-                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl shadow-sm">
-                            <div class="flex items-center space-x-2 mb-2">
-                                <svg class="w-5 h-5 text-sky-600" fill="currentColor" viewBox="0 0 24 24"><path d="M6.49 19.39h11.02L12 13.88zM17.8 8.44L12 2.64 6.2 8.44z"/></svg>
-                                <h3 class="font-bold text-slate-900 text-sm">Netlify</h3>
-                            </div>
-                            <p class="text-xs text-slate-600 leading-relaxed">
-                                Integración continua (CI/CD), formularios integrados, funciones Serverless y SSL automático.
-                            </p>
-                        </div>
-
-                        <!-- Firebase -->
-                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl shadow-sm">
-                            <div class="flex items-center space-x-2 mb-2">
-                                <svg class="w-5 h-5 text-amber-500" fill="currentColor" viewBox="0 0 24 24"><path d="M3.89 15.672L6.5 2.053l3.52 6.64-10.13 7.005zm16.22-3.877l-2.73-10.05-1.5 2.87 4.23 7.18zm-5.74-5.385L12 1.5 9.63 6.41l4.74.03z"/></svg>
-                                <h3 class="font-bold text-slate-900 text-sm">Firebase Hosting</h3>
-                            </div>
-                            <p class="text-xs text-slate-600 leading-relaxed">
-                                Infraestructura respaldada por Google con SSD, certificado SSL gratuito y CDN global.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </article>
-
-            <!-- SLIDE 8: Limitaciones del Hosting Gratuito -->
-            <article class="slide-item absolute inset-0 hidden flex-col p-6 overflow-y-auto slide-content-scroll" data-slide="8">
-                <div class="max-w-lg mx-auto w-full space-y-5 my-auto">
-                    <div class="text-center space-y-1">
-                        <span class="text-xs font-semibold text-amber-600 tracking-wider uppercase">Consideraciones Críticas</span>
-                        <h2 class="text-xl md:text-2xl font-bold text-slate-900">Limitaciones del Hosting Gratuito</h2>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <!-- Lim 1 -->
-                        <div class="p-3.5 bg-amber-50/60 border border-amber-200/70 rounded-2xl flex items-start space-x-3">
-                            <div class="p-1.5 bg-amber-100 text-amber-700 rounded-lg">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                            </div>
-                            <div>
-                                <h3 class="font-bold text-xs md:text-sm text-slate-900">Subdominios Genéricos</h3>
-                                <p class="text-[11px] text-slate-600 mt-0.5">Sin dominio propio (.com / .net) para una marca profesional.</p>
-                            </div>
-                        </div>
-
-                        <!-- Lim 2 -->
-                        <div class="p-3.5 bg-amber-50/60 border border-amber-200/70 rounded-2xl flex items-start space-x-3">
-                            <div class="p-1.5 bg-amber-100 text-amber-700 rounded-lg">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                            </div>
-                            <div>
-                                <h3 class="font-bold text-xs md:text-sm text-slate-900">Recursos Restringidos</h3>
-                                <p class="text-[11px] text-slate-600 mt-0.5">Límites estrictos de CPU, memoria RAM y ancho de banda.</p>
-                            </div>
-                        </div>
-
-                        <!-- Lim 3 -->
-                        <div class="p-3.5 bg-amber-50/60 border border-amber-200/70 rounded-2xl flex items-start space-x-3">
-                            <div class="p-1.5 bg-amber-100 text-amber-700 rounded-lg">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-                            </div>
-                            <div>
-                                <h3 class="font-bold text-xs md:text-sm text-slate-900">Sin Soporte Técnico</h3>
-                                <p class="text-[11px] text-slate-600 mt-0.5">Ausencia de asistencia técnica personalizada ante errores o caídas.</p>
-                            </div>
-                        </div>
-
-                        <!-- Lim 4 -->
-                        <div class="p-3.5 bg-amber-50/60 border border-amber-200/70 rounded-2xl flex items-start space-x-3">
-                            <div class="p-1.5 bg-amber-100 text-amber-700 rounded-lg">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-                            </div>
-                            <div>
-                                <h3 class="font-bold text-xs md:text-sm text-slate-900">Seguridad Básica</h3>
-                                <p class="text-[11px] text-slate-600 mt-0.5">Carencia de respaldos automáticos diarios y protección anti-DDoS avanzada.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </article>
-
-            <!-- SLIDE 9: Principales Proveedores de Hosting de Pago -->
-            <article class="slide-item absolute inset-0 hidden flex-col p-6 overflow-y-auto slide-content-scroll" data-slide="9">
-                <div class="max-w-xl mx-auto w-full space-y-4 my-auto">
-                    <div class="text-center space-y-1">
-                        <span class="text-xs font-semibold text-sky-600 tracking-wider uppercase">Mercado Profesional</span>
-                        <h2 class="text-xl md:text-2xl font-bold text-slate-900">Proveedores de Hosting de Pago</h2>
-                    </div>
-
-                    <!-- Responsive Cards View for Mobile, Table for Desktop -->
-                    <div class="space-y-3 md:hidden">
-                        <!-- Hostinger -->
-                        <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl space-y-1">
-                            <div class="flex items-center justify-between border-b border-slate-200/60 pb-1.5">
-                                <span class="font-bold text-sm text-sky-600">Hostinger</span>
-                                <span class="text-[10px] bg-slate-200 text-slate-700 font-medium px-2 py-0.5 rounded-full">Emprendedores / Pymes</span>
-                            </div>
-                            <p class="text-xs font-medium text-slate-800">Calidad-precio accesible</p>
-                            <p class="text-[11px] text-slate-500">Tech: LiteSpeed Web Server + Almacenamiento NVMe</p>
-                        </div>
-
-                        <!-- SiteGround -->
-                        <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl space-y-1">
-                            <div class="flex items-center justify-between border-b border-slate-200/60 pb-1.5">
-                                <span class="font-bold text-sm text-sky-600">SiteGround</span>
-                                <span class="text-[10px] bg-slate-200 text-slate-700 font-medium px-2 py-0.5 rounded-full">WordPress & Negocios</span>
-                            </div>
-                            <p class="text-xs font-medium text-slate-800">Alto rendimiento y soporte top</p>
-                            <p class="text-[11px] text-slate-500">Tech: Google Cloud Infrastructure + Caché avanzada</p>
-                        </div>
-
-                        <!-- Bluehost -->
-                        <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl space-y-1">
-                            <div class="flex items-center justify-between border-b border-slate-200/60 pb-1.5">
-                                <span class="font-bold text-sm text-sky-600">Bluehost</span>
-                                <span class="text-[10px] bg-slate-200 text-slate-700 font-medium px-2 py-0.5 rounded-full">Principiantes CMS</span>
-                            </div>
-                            <p class="text-xs font-medium text-slate-800">Integración nativa WordPress</p>
-                            <p class="text-[11px] text-slate-500">Tech: Instalación guiada + Dominio gratis 1er año</p>
-                        </div>
-
-                        <!-- AWS / DigitalOcean -->
-                        <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl space-y-1">
-                            <div class="flex items-center justify-between border-b border-slate-200/60 pb-1.5">
-                                <span class="font-bold text-sm text-sky-600">AWS / DigitalOcean</span>
-                                <span class="text-[10px] bg-slate-200 text-slate-700 font-medium px-2 py-0.5 rounded-full">Apps & Alto Tráfico</span>
-                            </div>
-                            <p class="text-xs font-medium text-slate-800">Nube escalable a la medida</p>
-                            <p class="text-[11px] text-slate-500">Tech: Instancias Cloud VPS + Pago por consumo</p>
-                        </div>
-                    </div>
-
-                    <!-- Desktop Clean Table -->
-                    <div class="hidden md:block overflow-hidden border border-slate-200 rounded-2xl shadow-sm">
-                        <table class="w-full text-left text-xs">
-                            <thead class="bg-slate-100 text-slate-700 font-semibold uppercase text-[10px] tracking-wider border-b border-slate-200">
-                                <tr>
-                                    <th class="p-3">Proveedor</th>
-                                    <th class="p-3">Enfoque</th>
-                                    <th class="p-3">Tecnología Clave</th>
-                                    <th class="p-3">Perfil Ideal</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-200 bg-slate-50 text-slate-700">
-                                <tr>
-                                    <td class="p-3 font-bold text-sky-700">Hostinger</td>
-                                    <td class="p-3">Calidad-precio accesible</td>
-                                    <td class="p-3">LiteSpeed + NVMe</td>
-                                    <td class="p-3">Emprendedores y pymes</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-3 font-bold text-sky-700">SiteGround</td>
-                                    <td class="p-3">Rendimiento y soporte</td>
-                                    <td class="p-3">Google Cloud + caché</td>
-                                    <td class="p-3">WordPress y negocios</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-3 font-bold text-sky-700">Bluehost</td>
-                                    <td class="p-3">Integración WordPress</td>
-                                    <td class="p-3">Instalación guiada</td>
-                                    <td class="p-3">Principiantes en CMS</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-3 font-bold text-sky-700">AWS / DigitalOcean</td>
-                                    <td class="p-3">Nube escalable a medida</td>
-                                    <td class="p-3">Instancias Cloud VPS</td>
-                                    <td class="p-3">Apps y alto tráfico</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </article>
-
-            <!-- SLIDE 10: Hosting Gratuito vs. Hosting de Pago -->
-            <article class="slide-item absolute inset-0 hidden flex-col p-6 overflow-y-auto slide-content-scroll" data-slide="10">
-                <div class="max-w-xl mx-auto w-full space-y-4 my-auto">
-                    <div class="text-center space-y-1">
-                        <span class="text-xs font-semibold text-sky-600 tracking-wider uppercase">Matriz Comparativa</span>
-                        <h2 class="text-xl md:text-2xl font-bold text-slate-900">Hosting Gratuito vs. De Pago</h2>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <!-- Hosting Gratuito Column -->
-                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-3">
-                            <div class="flex items-center space-x-2 border-b border-slate-200 pb-2">
-                                <span class="w-3 h-3 rounded-full bg-slate-400"></span>
-                                <h3 class="font-bold text-slate-800 text-sm md:text-base">Hosting Gratuito</h3>
-                            </div>
-                            <ul class="space-y-2 text-xs text-slate-600">
-                                <li class="flex items-start space-x-2">
-                                    <span class="font-bold text-slate-400">•</span>
-                                    <span><strong>Costo:</strong> Cero inversión inicial.</span>
-                                </li>
-                                <li class="flex items-start space-x-2">
-                                    <span class="font-bold text-slate-400">•</span>
-                                    <span><strong>Uso:</strong> Prácticas y prototipos escolares.</span>
-                                </li>
-                                <li class="flex items-start space-x-2">
-                                    <span class="font-bold text-slate-400">•</span>
-                                    <span><strong>Estabilidad:</strong> Susceptible a saturación.</span>
-                                </li>
-                                <li class="flex items-start space-x-2">
-                                    <span class="font-bold text-slate-400">•</span>
-                                    <span><strong>Dominio:</strong> Subdominio del proveedor.</span>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <!-- Hosting de Pago Column -->
-                        <div class="p-4 bg-sky-50/60 border border-sky-200 rounded-2xl space-y-3">
-                            <div class="flex items-center space-x-2 border-b border-sky-200 pb-2">
-                                <span class="w-3 h-3 rounded-full bg-sky-600"></span>
-                                <h3 class="font-bold text-sky-900 text-sm md:text-base">Hosting de Pago</h3>
-                            </div>
-                            <ul class="space-y-2 text-xs text-slate-700">
-                                <li class="flex items-start space-x-2">
-                                    <span class="font-bold text-sky-600">•</span>
-                                    <span><strong>Costo:</strong> Suscripción mensual o anual.</span>
-                                </li>
-                                <li class="flex items-start space-x-2">
-                                    <span class="font-bold text-sky-600">•</span>
-                                    <span><strong>Uso:</strong> Empresas, tiendas y portafolios.</span>
-                                </li>
-                                <li class="flex items-start space-x-2">
-                                    <span class="font-bold text-sky-600">•</span>
-                                    <span><strong>Estabilidad:</strong> Garantía SLA 99.9% activa.</span>
-                                </li>
-                                <li class="flex items-start space-x-2">
-                                    <span class="font-bold text-sky-600">•</span>
-                                    <span><strong>Dominio:</strong> Marca propia y correo corporativo.</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </article>
-
-            <!-- SLIDE 11: ¿Cuál es el Mejor Hosting? Depende del Objetivo -->
-            <article class="slide-item absolute inset-0 hidden flex-col p-6 overflow-y-auto slide-content-scroll" data-slide="11">
-                <div class="max-w-xl mx-auto w-full space-y-4 my-auto">
-                    <div class="text-center space-y-2">
-                        <!-- Cloud SVG Badge -->
-                        <div class="inline-flex items-center space-x-1.5 px-3 py-1 bg-sky-50 border border-sky-200 rounded-full text-sky-700 text-xs font-semibold uppercase tracking-wider">
-                            <svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 001-9.999 5.002 5.002 0 00-9.78 2.096A4.001 4.001 0 003 15z"></path>
-                            </svg>
-                            <span>CLOUD COMPUTING</span>
-                        </div>
-                        <h2 class="text-xl md:text-2xl font-bold text-slate-900">¿Cuál es el Mejor Hosting?</h2>
-                        <p class="text-xs text-slate-500">La elección final depende exclusivamente de los objetivos del proyecto</p>
-                    </div>
-
-                    <div class="space-y-3">
-                        <!-- Recommendation 1 -->
-                        <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl flex items-start space-x-3 shadow-sm">
-                            <div class="p-2 bg-sky-100 text-sky-700 rounded-xl font-bold text-xs">
-                                01
-                            </div>
-                            <div>
-                                <h3 class="font-bold text-slate-900 text-xs md:text-sm">Mejor Calidad-Precio (Pago)</h3>
-                                <p class="text-xs text-sky-600 font-semibold">Hostinger</p>
-                                <p class="text-[11px] text-slate-600 mt-0.5">Velocidad NVMe y panel intuitivo a costo accesible para iniciar proyectos serios.</p>
-                            </div>
-                        </div>
-
-                        <!-- Recommendation 2 -->
-                        <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl flex items-start space-x-3 shadow-sm">
-                            <div class="p-2 bg-blue-100 text-blue-700 rounded-xl font-bold text-xs">
-                                02
-                            </div>
-                            <div>
-                                <h3 class="font-bold text-slate-900 text-xs md:text-sm">Mejor Rendimiento Empresarial</h3>
-                                <p class="text-xs text-blue-600 font-semibold">SiteGround / Cloud Computing</p>
-                                <p class="text-[11px] text-slate-600 mt-0.5">Máxima estabilidad, soporte técnico especializado y entornos de alta disponibilidad.</p>
-                            </div>
-                        </div>
-
-                        <!-- Recommendation 3 -->
-                        <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl flex items-start space-x-3 shadow-sm">
-                            <div class="p-2 bg-emerald-100 text-emerald-700 rounded-xl font-bold text-xs">
-                                03
-                            </div>
-                            <div>
-                                <h3 class="font-bold text-slate-900 text-xs md:text-sm">Mejor Opción Gratuita</h3>
-                                <p class="text-xs text-emerald-600 font-semibold">Vercel / GitHub Pages</p>
-                                <p class="text-[11px] text-slate-600 mt-0.5">Ideal para proyectos escolares, desarrollo frontend moderno y sitios estáticos.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </article>
-
         </section>
 
-        <!-- Bottom Touch-Optimized Navigation Bar -->
-        <footer class="h-16 border-t border-slate-200 bg-white/95 backdrop-blur flex items-center justify-between px-5 z-20">
-            <!-- Prev Button -->
-            <button id="prevBtn" class="flex items-center justify-center space-x-1 px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-xl active:scale-95 transition-all text-xs disabled:opacity-40 disabled:pointer-events-none">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                </svg>
-                <span>Anterior</span>
-            </button>
-
-            <!-- Slide Counter Button (Triggers Index Modal) -->
-            <button id="counterBtn" class="px-3.5 py-1.5 bg-sky-50 hover:bg-sky-100 border border-sky-200 text-sky-800 font-bold rounded-xl text-xs tracking-wide transition-all active:scale-95">
-                <span id="currentSlideNum">1</span> / <span id="totalSlidesNum">11</span>
-            </button>
-
-            <!-- Next Button -->
-            <button id="nextBtn" class="flex items-center justify-center space-x-1 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl active:scale-95 transition-all text-xs disabled:opacity-40 disabled:pointer-events-none">
-                <span>Siguiente</span>
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                </svg>
-            </button>
-        </footer>
-
-        <!-- Modal Index Drawer Grid -->
-        <div id="indexModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300 flex items-end md:items-center justify-center p-0 md:p-4">
-            <div id="modalContent" class="w-full max-w-md bg-white rounded-t-3xl md:rounded-3xl p-5 border border-slate-200 shadow-2xl transform translate-y-full md:translate-y-4 transition-transform duration-300 max-h-[80vh] flex flex-col">
-                
-                <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-                    <div class="flex items-center space-x-2">
-                        <svg class="w-5 h-5 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path>
-                        </svg>
-                        <h3 class="font-bold text-slate-900 text-sm">Índice de Diapositivas</h3>
-                    </div>
-                    <button id="closeModalBtn" class="p-1 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
+        
+        <section class="slide absolute inset-0 pt-8 pb-20 px-4 sm:px-8 flex flex-col justify-center transition-opacity duration-300 opacity-0 pointer-events-none z-0 overflow-y-auto">
+            <div class="max-w-4xl mx-auto w-full my-auto space-y-6">
+                <div class="text-center sm:text-left space-y-2">
+                    <span class="text-xs font-bold text-sky-600 uppercase tracking-wider">Fundamentos de la Red</span>
+                    <h2 class="text-2xl sm:text-4xl font-bold text-slate-900">¿Qué es un Servidor Web y el Hosting?</h2>
                 </div>
 
-                <!-- Slide Thumbnails Grid -->
-                <div id="modalGrid" class="grid grid-cols-1 gap-2 py-4 overflow-y-auto slide-content-scroll flex-1">
-                    <!-- Dynamic Grid Buttons generated by JS -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 sm:p-8 hover:border-sky-300 transition-colors shadow-sm">
+                        <div class="w-12 h-12 bg-sky-100 rounded-xl flex items-center justify-center text-sky-600 mb-4">
+                            <i data-lucide="server" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Servidor Web</h3>
+                        <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+                            Es un equipo informático de alto rendimiento (software y hardware) conectado 24/7 a Internet, programado para procesar peticiones HTTP/HTTPS y servir los archivos de una web (HTML, imágenes, datos) al navegador del usuario.
+                        </p>
+                    </div>
+
+                    
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 sm:p-8 hover:border-blue-300 transition-colors shadow-sm">
+                        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 mb-4">
+                            <i data-lucide="hard-drive" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Web Hosting (Alojamiento)</h3>
+                        <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+                            Es el servicio de alquiler de espacio físico y almacenamiento dentro de un servidor web. Permite guardar la información de tu sitio para que sea accesible públicamente en cualquier parte del mundo.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-sky-50 border border-sky-200 rounded-xl p-4 flex items-center gap-3 text-sky-900 text-sm">
+                    <i data-lucide="info" class="w-5 h-5 text-sky-600 flex-shrink-0"></i>
+                    <span><strong>Analogía sencilla:</strong> Tu sitio web es una casa; el <strong>Hosting</strong> es el terreno donde la construyes, y el <strong>Servidor</strong> es la estructura física de la vivienda.</span>
                 </div>
             </div>
-        </div>
+        </section>
+
+        
+        <section class="slide absolute inset-0 pt-8 pb-20 px-4 sm:px-8 flex flex-col justify-center transition-opacity duration-300 opacity-0 pointer-events-none z-0 overflow-y-auto">
+            <div class="max-w-4xl mx-auto w-full my-auto space-y-6">
+                <div class="text-center sm:text-left space-y-1">
+                    <span class="text-xs font-bold text-sky-600 uppercase tracking-wider">Arquitecturas</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">Tipos de Hosting en Internet</h2>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 hover:border-sky-400 transition-all">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="p-2 bg-sky-100 rounded-lg text-sky-600"><i data-lucide="users" class="w-5 h-5"></i></div>
+                            <h3 class="font-bold text-slate-900">Hosting Compartido</h3>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-600">Múltiples sitios comparten los mismos recursos de un único servidor (CPU, RAM). Económico e ideal para proyectos iniciales.</p>
+                    </div>
+
+                    
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 hover:border-sky-400 transition-all">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="p-2 bg-blue-100 rounded-lg text-blue-600"><i data-lucide="cpu" class="w-5 h-5"></i></div>
+                            <h3 class="font-bold text-slate-900">Servidor VPS Virtual</h3>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-600">Un servidor físico se particiona en múltiples entornos virtuales aislados con recursos RAM/CPU 100% garantizados.</p>
+                    </div>
+
+                    
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 hover:border-sky-400 transition-all">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="p-2 bg-indigo-100 rounded-lg text-indigo-600"><i data-lucide="shield-check" class="w-5 h-5"></i></div>
+                            <h3 class="font-bold text-slate-900">Servidor Dedicado</h3>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-600">Un servidor físico completo dedicado exclusivamente a un solo cliente. Máxima potencia, control y seguridad total.</p>
+                    </div>
+
+                    
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 hover:border-sky-400 transition-all">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="p-2 bg-cyan-100 rounded-lg text-cyan-600"><i data-lucide="cloud" class="w-5 h-5"></i></div>
+                            <h3 class="font-bold text-slate-900">Cloud Hosting</h3>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-600">Red interconectada de servidores en la nube. Ofrece alta disponibilidad, escalabilidad inmediata y pago por consumo.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="slide absolute inset-0 pt-8 pb-20 px-4 sm:px-8 flex flex-col justify-center transition-opacity duration-300 opacity-0 pointer-events-none z-0 overflow-y-auto">
+            <div class="max-w-4xl mx-auto w-full my-auto space-y-6">
+                <div class="text-center sm:text-left space-y-1">
+                    <span class="text-xs font-bold text-sky-600 uppercase tracking-wider">Evolución de Proyectos</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">Escala de Crecimiento en Servidores</h2>
+                </div>
+
+                <div class="relative border-l-2 border-sky-200 ml-4 sm:ml-6 space-y-6 py-2">
+                    
+                    <div class="relative pl-6 sm:pl-8">
+                        <span class="absolute -left-[17px] top-0 w-8 h-8 rounded-full bg-sky-600 text-white flex items-center justify-center font-bold text-xs ring-4 ring-white">1</span>
+                        <h3 class="font-bold text-slate-900 text-base">Nivel Inicial: Hosting Compartido</h3>
+                        <p class="text-xs sm:text-sm text-slate-600 mt-0.5">Blogs personales, portfolios, pequeños sitios informativos (< 10,000 visitas/mes).</p>
+                    </div>
+
+                    
+                    <div class="relative pl-6 sm:pl-8">
+                        <span class="absolute -left-[17px] top-0 w-8 h-8 rounded-full bg-sky-600 text-white flex items-center justify-center font-bold text-xs ring-4 ring-white">2</span>
+                        <h3 class="font-bold text-slate-900 text-base">Nivel Intermedio: WordPress Optimizado / Reseller</h3>
+                        <p class="text-xs sm:text-sm text-slate-600 mt-0.5">Pymes, comercio electrónico inicial y agencias web administradas.</p>
+                    </div>
+
+                    
+                    <div class="relative pl-6 sm:pl-8">
+                        <span class="absolute -left-[17px] top-0 w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs ring-4 ring-white">3</span>
+                        <h3 class="font-bold text-slate-900 text-base">Nivel Avanzado: Servidor VPS Administrado</h3>
+                        <p class="text-xs sm:text-sm text-slate-600 mt-0.5">Aplicaciones web dinámicas, tiendas SaaS y sitios con tráfico recurrente elevado.</p>
+                    </div>
+
+                    
+                    <div class="relative pl-6 sm:pl-8">
+                        <span class="absolute -left-[17px] top-0 w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-xs ring-4 ring-white">4</span>
+                        <h3 class="font-bold text-slate-900 text-base">Nivel Empresarial: Cloud Infrastructure / Dedicado</h3>
+                        <p class="text-xs sm:text-sm text-slate-600 mt-0.5">Plataformas masivas, bancos, e-commerce global y arquitecturas microservicios.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="slide absolute inset-0 pt-6 pb-20 px-3 sm:px-6 flex flex-col transition-opacity duration-300 opacity-0 pointer-events-none z-0 overflow-hidden">
+            <div class="max-w-5xl mx-auto w-full flex flex-col h-full space-y-3">
+                
+                
+                <div class="flex-none space-y-2">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div>
+                            <span class="text-xs font-bold text-sky-600 uppercase tracking-wider">Ecosistema Global</span>
+                            <h2 class="text-xl sm:text-2xl font-bold text-slate-900">Directorio Completo de Hostings</h2>
+                        </div>
+                        <div id="dirCounter" class="text-xs font-semibold px-2.5 py-1 bg-sky-50 text-sky-700 border border-sky-200 rounded-full w-fit">
+                            Mostrando 0 de 0
+                        </div>
+                    </div>
+
+                    
+                    <div class="relative">
+                        <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" id="dirSearch" placeholder="Buscar por nombre, tipo (ej. Vercel, Hostinger, AWS, Estático)..." 
+                            class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white transition-all">
+                    </div>
+
+                    
+                    <div class="flex items-center gap-1.5 overflow-x-auto pb-1 custom-scrollbar text-xs">
+                        <button class="dir-filter active px-3 py-1 rounded-lg border bg-sky-600 text-white border-sky-600 font-medium whitespace-nowrap transition-colors" data-cat="all">Todos</button>
+                        <button class="dir-filter px-3 py-1 rounded-lg border bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200 font-medium whitespace-nowrap transition-colors" data-cat="estatico">Estáticos / Jamstack</button>
+                        <button class="dir-filter px-3 py-1 rounded-lg border bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200 font-medium whitespace-nowrap transition-colors" data-cat="gratuito">Gratuitos Tradicionales</button>
+                        <button class="dir-filter px-3 py-1 rounded-lg border bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200 font-medium whitespace-nowrap transition-colors" data-cat="compartido">Compartido & WP</button>
+                        <button class="dir-filter px-3 py-1 rounded-lg border bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200 font-medium whitespace-nowrap transition-colors" data-cat="vps">VPS & Cloud</button>
+                        <button class="dir-filter px-3 py-1 rounded-lg border bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200 font-medium whitespace-nowrap transition-colors" data-cat="paas">PaaS & Backend</button>
+                        <button class="dir-filter px-3 py-1 rounded-lg border bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200 font-medium whitespace-nowrap transition-colors" data-cat="dedicado">Dedicados</button>
+                        <button class="dir-filter px-3 py-1 rounded-lg border bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200 font-medium whitespace-nowrap transition-colors" data-cat="creadores">Creadores Web</button>
+                    </div>
+                </div>
+
+                
+                <div id="dirGridContainer" class="flex-1 overflow-y-auto isolate-scroll custom-scrollbar pr-1">
+                    <div id="dirGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 pb-4">
+                        
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        
+        <section class="slide absolute inset-0 pt-8 pb-20 px-4 sm:px-8 flex flex-col justify-center transition-opacity duration-300 opacity-0 pointer-events-none z-0 overflow-y-auto">
+            <div class="max-w-4xl mx-auto w-full my-auto space-y-6">
+                <div class="text-center sm:text-left space-y-1">
+                    <span class="text-xs font-bold text-sky-600 uppercase tracking-wider">Jamstack & Frontend</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">Hostings Gratuitos en la Nube (Estáticos)</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 flex flex-col justify-between hover:border-sky-300 transition-colors">
+                        <div>
+                            <div class="flex items-center gap-2 mb-3">
+                                <div class="p-2 bg-slate-900 text-white rounded-lg"><i data-lucide="github" class="w-5 h-5"></i></div>
+                                <h3 class="font-bold text-slate-900">GitHub Pages</h3>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed mb-3">Ideal para proyectos de código abierto, HTML/CSS/JS estático y portfolios. Integración directa con repositorios de Git.</p>
+                        </div>
+                        <span class="text-[11px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-md w-fit">100% Gratuito</span>
+                    </div>
+
+                    
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 flex flex-col justify-between hover:border-sky-300 transition-colors">
+                        <div>
+                            <div class="flex items-center gap-2 mb-3">
+                                <div class="p-2 bg-black text-white rounded-lg"><i data-lucide="triangle" class="w-5 h-5"></i></div>
+                                <h3 class="font-bold text-slate-900">Vercel</h3>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed mb-3">Especializado en frameworks modernos (Next.js, React, Vue). Despliegue automático con cada commit, CDN global ultrarrápida.</p>
+                        </div>
+                        <span class="text-[11px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-md w-fit">Plan Hobby Gratis</span>
+                    </div>
+
+                    
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 flex flex-col justify-between hover:border-sky-300 transition-colors">
+                        <div>
+                            <div class="flex items-center gap-2 mb-3">
+                                <div class="p-2 bg-teal-600 text-white rounded-lg"><i data-lucide="globe" class="w-5 h-5"></i></div>
+                                <h3 class="font-bold text-slate-900">Netlify</h3>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed mb-3">Excelente para sitios estáticos, formularios integrados y Serverless Functions. Arrastra y suelta carpetas para publicar en segundos.</p>
+                        </div>
+                        <span class="text-[11px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-md w-fit">Plan Starter Gratis</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="slide absolute inset-0 pt-8 pb-20 px-4 sm:px-8 flex flex-col justify-center transition-opacity duration-300 opacity-0 pointer-events-none z-0 overflow-y-auto">
+            <div class="max-w-4xl mx-auto w-full my-auto space-y-6">
+                <div class="text-center sm:text-left space-y-1">
+                    <span class="text-xs font-bold text-sky-600 uppercase tracking-wider">PHP & MySQL Sin Costo</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">Hostings Gratuitos Tradicionales</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 hover:border-sky-300 transition-colors">
+                        <div class="p-2 bg-sky-100 text-sky-700 rounded-lg w-fit mb-3"><i data-lucide="zap" class="w-5 h-5"></i></div>
+                        <h3 class="font-bold text-slate-900 mb-1">InfinityFree</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed mb-3">Ofrece espacio en disco ilimitado, soporte para PHP y bases de datos MySQL. Sin anuncios forzados en tu sitio web.</p>
+                        <div class="text-[11px] text-slate-500 font-medium">Soporta WordPress básico</div>
+                    </div>
+
+                    
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 hover:border-sky-300 transition-colors">
+                        <div class="p-2 bg-amber-100 text-amber-700 rounded-lg w-fit mb-3"><i data-lucide="award" class="w-5 h-5"></i></div>
+                        <h3 class="font-bold text-slate-900 mb-1">AwardSpace</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed mb-3">Permite alojar 1 dominio y 3 subdominios. Incluye instalador Zacky de 1 clic para WordPress y Joomla.</p>
+                        <div class="text-[11px] text-slate-500 font-medium">1GB Almacenamiento</div>
+                    </div>
+
+                    
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 hover:border-sky-300 transition-colors">
+                        <div class="p-2 bg-purple-100 text-purple-700 rounded-lg w-fit mb-3"><i data-lucide="layers" class="w-5 h-5"></i></div>
+                        <h3 class="font-bold text-slate-900 mb-1">ByetHost</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed mb-3">Proporciona panel de control VistaPanel, subdominios gratuitos y soporte para FTP y bases de datos PHP/MySQL.</p>
+                        <div class="text-[11px] text-slate-500 font-medium">Panel VistaPanel incluido</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="slide absolute inset-0 pt-8 pb-20 px-4 sm:px-8 flex flex-col justify-center transition-opacity duration-300 opacity-0 pointer-events-none z-0 overflow-y-auto">
+            <div class="max-w-4xl mx-auto w-full my-auto space-y-6">
+                <div class="text-center sm:text-left space-y-1">
+                    <span class="text-xs font-bold text-amber-600 uppercase tracking-wider">Consideraciones Importantes</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">Limitaciones del Hosting Gratuito</h2>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 border-l-4 border-l-amber-500">
+                        <div class="flex items-center gap-2 font-bold text-slate-900 mb-1">
+                            <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-500"></i>
+                            Subdominios Genéricos
+                        </div>
+                        <p class="text-xs text-slate-600">Suelen obligar a usar nombres tipo <code class="bg-slate-200 px-1 py-0.5 rounded text-[11px]">tuweb.proveedor.com</code> en lugar de un dominio profesional <code class="bg-slate-200 px-1 py-0.5 rounded text-[11px]">.com</code> propio.</p>
+                    </div>
+
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 border-l-4 border-l-amber-500">
+                        <div class="flex items-center gap-2 font-bold text-slate-900 mb-1">
+                            <i data-lucide="gauge" class="w-4 h-4 text-amber-500"></i>
+                            Recursos Muy Restringidos
+                        </div>
+                        <p class="text-xs text-slate-600">Límites estrictos de memoria RAM, tiempo de CPU y ancho de banda mensual. Si tu sitio recibe tráfico, se suspende automáticamente.</p>
+                    </div>
+
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 border-l-4 border-l-amber-500">
+                        <div class="flex items-center gap-2 font-bold text-slate-900 mb-1">
+                            <i data-lucide="headphones" class="w-4 h-4 text-amber-500"></i>
+                            Sin Soporte Técnico
+                        </div>
+                        <p class="text-xs text-slate-600">No cuentas con asistencia ante caídas del servidor, errores de código o problemas de configuración. Dependes únicamente de foros.</p>
+                    </div>
+
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 border-l-4 border-l-amber-500">
+                        <div class="flex items-center gap-2 font-bold text-slate-900 mb-1">
+                            <i data-lucide="lock" class="w-4 h-4 text-amber-500"></i>
+                            Seguridad y Respaldos Limitados
+                        </div>
+                        <p class="text-xs text-slate-600">Sin copias de seguridad automáticas garantizadas ni certificados SSL personalizados en la mayoría de opciones tradicionales.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="slide absolute inset-0 pt-8 pb-20 px-4 sm:px-8 flex flex-col justify-center transition-opacity duration-300 opacity-0 pointer-events-none z-0 overflow-y-auto">
+            <div class="max-w-4xl mx-auto w-full my-auto space-y-6">
+                <div class="text-center sm:text-left space-y-1">
+                    <span class="text-xs font-bold text-sky-600 uppercase tracking-wider">Opciones Profesionales</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">Principales Proveedores de Pago</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 flex flex-col justify-between hover:border-sky-300 transition-colors">
+                        <div>
+                            <div class="p-2 bg-indigo-100 text-indigo-700 rounded-lg w-fit mb-3"><i data-lucide="shopping-bag" class="w-5 h-5"></i></div>
+                            <h3 class="font-bold text-slate-900 text-lg mb-1">Hostinger</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed mb-4">Líder en relación calidad-precio. Excelente rendimiento con panel propio hPanel intuitivo, dominio gratis y SSL.</p>
+                        </div>
+                        <div class="text-xs font-semibold text-sky-700 bg-sky-50 p-2 rounded border border-sky-100 text-center">Ideal para Proyectos Iniciales y Pymes</div>
+                    </div>
+
+                    
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 flex flex-col justify-between hover:border-sky-300 transition-colors">
+                        <div>
+                            <div class="p-2 bg-emerald-100 text-emerald-700 rounded-lg w-fit mb-3"><i data-lucide="shield-check" class="w-5 h-5"></i></div>
+                            <h3 class="font-bold text-slate-900 text-lg mb-1">SiteGround</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed mb-4">Recomendado oficialmente por WordPress. Destaca por su soporte técnico 24/7 excepcional y máxima velocidad en Google Cloud.</p>
+                        </div>
+                        <div class="text-xs font-semibold text-emerald-700 bg-emerald-50 p-2 rounded border border-emerald-100 text-center">Ideal para Negocios y E-commerce</div>
+                    </div>
+
+                    
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 flex flex-col justify-between hover:border-sky-300 transition-colors">
+                        <div>
+                            <div class="p-2 bg-blue-100 text-blue-700 rounded-lg w-fit mb-3"><i data-lucide="server" class="w-5 h-5"></i></div>
+                            <h3 class="font-bold text-slate-900 text-lg mb-1">AWS / DigitalOcean</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed mb-4">Infraestructura en la nube para desarrolladores. Control total de instancias VPS, flexibilidad absoluta y pago por horas.</p>
+                        </div>
+                        <div class="text-xs font-semibold text-blue-700 bg-blue-50 p-2 rounded border border-blue-100 text-center">Ideal para Developers y Apps Web</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="slide absolute inset-0 pt-8 pb-20 px-4 sm:px-8 flex flex-col justify-center transition-opacity duration-300 opacity-0 pointer-events-none z-0 overflow-y-auto">
+            <div class="max-w-4xl mx-auto w-full my-auto space-y-6">
+                <div class="text-center sm:text-left space-y-1">
+                    <span class="text-xs font-bold text-sky-600 uppercase tracking-wider">Cuadro Comparativo</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">Hosting Gratuito vs. Hosting de Pago</h2>
+                </div>
+
+                <div class="overflow-x-auto border border-slate-200 rounded-xl bg-white shadow-sm">
+                    <table class="w-full text-left text-xs sm:text-sm">
+                        <thead class="bg-slate-100 text-slate-800 font-bold border-b border-slate-200">
+                            <tr>
+                                <th class="p-3 sm:p-4">Característica</th>
+                                <th class="p-3 sm:p-4 text-amber-700 bg-amber-50/50">Hosting Gratuito</th>
+                                <th class="p-3 sm:p-4 text-sky-700 bg-sky-50/50">Hosting de Pago</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200">
+                            <tr>
+                                <td class="p-3 sm:p-4 font-semibold text-slate-900">Costo Mensual</td>
+                                <td class="p-3 sm:p-4 text-slate-600 bg-amber-50/20">$0 / mes</td>
+                                <td class="p-3 sm:p-4 text-slate-600 bg-sky-50/20">Desde $2.99 / mes</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 sm:p-4 font-semibold text-slate-900">Dominio Personalizado</td>
+                                <td class="p-3 sm:p-4 text-slate-600 bg-amber-50/20">Raramente (Usa subdominio)</td>
+                                <td class="p-3 sm:p-4 text-slate-600 bg-sky-50/20">Incluido gratis (.com / .net)</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 sm:p-4 font-semibold text-slate-900">Disponibilidad (Uptime)</td>
+                                <td class="p-3 sm:p-4 text-slate-600 bg-amber-50/20">95% - Variable</td>
+                                <td class="p-3 sm:p-4 text-slate-600 bg-sky-50/20">99.9% Garantizado</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 sm:p-4 font-semibold text-slate-900">Soporte Técnico</td>
+                                <td class="p-3 sm:p-4 text-slate-600 bg-amber-50/20">Nulo o por foros</td>
+                                <td class="p-3 sm:p-4 text-slate-600 bg-sky-50/20">24/7 en vivo por chat/ticket</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 sm:p-4 font-semibold text-slate-900">Uso Recomendado</td>
+                                <td class="p-3 sm:p-4 text-slate-600 bg-amber-50/20">Prácticas, tareas educativas</td>
+                                <td class="p-3 sm:p-4 text-slate-600 bg-sky-50/20">Empresas, tiendas, marcas</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="slide absolute inset-0 pt-8 pb-20 px-4 sm:px-8 flex flex-col justify-center transition-opacity duration-300 opacity-0 pointer-events-none z-0 overflow-y-auto">
+            <div class="max-w-4xl mx-auto w-full my-auto space-y-6">
+                <div class="text-center sm:text-left space-y-1">
+                    <span class="text-xs font-bold text-sky-600 uppercase tracking-wider">Conclusión y Recomendaciones</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">¿Cuál es el Mejor Hosting? Depende del Objetivo</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 flex flex-col justify-between">
+                        <div>
+                            <span class="text-[11px] font-bold text-sky-700 uppercase tracking-wider">Mejor Calidad-Precio</span>
+                            <h3 class="text-lg font-bold text-slate-900 mt-1 mb-2">Hostinger</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">Para la gran mayoría de proyectos web, blogs o pequeñas empresas que buscan velocidad, soporte en español y bajos costos.</p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-200 text-xs text-sky-700 font-semibold flex items-center gap-1">
+                            <i data-lucide="check-circle" class="w-4 h-4"></i> Elección Recomendada
+                        </div>
+                    </div>
+
+                    
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 flex flex-col justify-between">
+                        <div>
+                            <span class="text-[11px] font-bold text-emerald-700 uppercase tracking-wider">Rendimiento Empresarial</span>
+                            <h3 class="text-lg font-bold text-slate-900 mt-1 mb-2">SiteGround / Cloud</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">Para e-commerce exigentes, sitios de alto tráfico o empresas que no pueden permitirse ni un minuto de inactividad.</p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-200 text-xs text-emerald-700 font-semibold flex items-center gap-1">
+                            <i data-lucide="check-circle" class="w-4 h-4"></i> Máximo Rendimiento
+                        </div>
+                    </div>
+
+                    
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 flex flex-col justify-between">
+                        <div>
+                            <span class="text-[11px] font-bold text-indigo-700 uppercase tracking-wider">Opción Gratuita Moderna</span>
+                            <h3 class="text-lg font-bold text-slate-900 mt-1 mb-2">Vercel / GitHub Pages</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">Para estudiantes, desarrolladores web frontend y proyectos de portafolio sin costo alguno y con despliegue profesional.</p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-200 text-xs text-indigo-700 font-semibold flex items-center gap-1">
+                            <i data-lucide="check-circle" class="w-4 h-4"></i> Mejor Opción $0
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center pt-2">
+                    <button onclick="goToSlide(0)" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-semibold hover:bg-slate-800 transition-all shadow-sm">
+                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Reiniciar Presentación
+                    </button>
+                </div>
+            </div>
+        </section>
 
     </main>
 
-    <!-- JavaScript Navigation & Touch Logic -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const slides = document.querySelectorAll('.slide-item');
-            const totalSlides = slides.length;
-            let currentSlide = 1;
-
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
-            const progressBar = document.getElementById('progressBar');
-            const currentSlideNum = document.getElementById('currentSlideNum');
-            const totalSlidesNum = document.getElementById('totalSlidesNum');
+    
+    <footer class="fixed bottom-0 left-0 w-full bg-white/95 backdrop-blur-md border-t border-slate-200 z-40 px-4 py-3">
+        <div class="max-w-4xl mx-auto flex items-center justify-between">
             
-            const indexModal = document.getElementById('indexModal');
-            const modalContent = document.getElementById('modalContent');
-            const openModalBtn = document.getElementById('openModalBtn');
-            const closeModalBtn = document.getElementById('closeModalBtn');
-            const counterBtn = document.getElementById('counterBtn');
-            const modalGrid = document.getElementById('modalGrid');
+            <button id="btnPrev" onclick="prevSlide()" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs sm:text-sm transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+                <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                <span class="hidden sm:inline">Anterior</span>
+            </button>
 
-            const slideTitles = [
-                "1. Portada",
-                "2. ¿Qué es Servidor Web y Hosting?",
-                "3. Tipos de Hosting en Internet",
-                "4. Escala de Crecimiento en Servidores",
-                "5. Separador: Hostings Gratuitos",
-                "6. Hostings Gratuitos Tradicionales",
-                "7. Hostings Gratuitos en la Nube",
-                "8. Limitaciones del Hosting Gratuito",
-                "9. Proveedores de Hosting de Pago",
-                "10. Hosting Gratuito vs. De Pago",
-                "11. ¿Cuál es el Mejor Hosting?"
-            ];
+            
+            <button onclick="openIndexModal()" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-bold text-slate-700 transition-colors">
+                <span id="slideCounter">1 / 11</span>
+                <i data-lucide="list" class="w-3.5 h-3.5 text-slate-500"></i>
+            </button>
 
-            totalSlidesNum.textContent = totalSlides;
+            
+            <button id="btnNext" onclick="nextSlide()" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-semibold text-xs sm:text-sm transition-colors disabled:opacity-40 disabled:cursor-not-allowed shadow-sm">
+                <span class="hidden sm:inline">Siguiente</span>
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            </button>
+        </div>
+    </footer>
 
-            // Generate Modal Quick Index Items
-            slideTitles.forEach((title, index) => {
+    
+    <div id="indexModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-xl max-w-md w-full p-6 space-y-4 max-h-[85vh] flex flex-col">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+                    <i data-lucide="book-open" class="w-4 h-4 text-sky-600"></i>
+                    Índice de Diapositivas
+                </h3>
+                <button onclick="closeIndexModal()" class="p-1 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <div id="indexList" class="flex-1 overflow-y-auto space-y-1.5 custom-scrollbar pr-1 text-xs">
+                
+            </div>
+        </div>
+    </div>
+
+    
+    <script>
+        // State variables
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length; // Exactly 11
+
+        const slideTitles = [
+            "1. Portada Oficial",
+            "2. ¿Qué es un Servidor Web y Hosting?",
+            "3. Tipos de Hosting en Internet",
+            "4. Escala de Crecimiento en Servidores",
+            "5. Directorio Completo de Hostings (+75)",
+            "6. Hostings Gratuitos en la Nube",
+            "7. Hostings Gratuitos Tradicionales",
+            "8. Limitaciones del Hosting Gratuito",
+            "9. Principales Proveedores de Pago",
+            "10. Comparativa Gratuito vs. Pago",
+            "11. ¿Cuál es el Mejor Hosting?"
+        ];
+
+        // Database of +75 real hosting providers
+        const hostingDatabase = [
+            // Static & Jamstack
+            { name: "GitHub Pages", category: "estatico", type: "Estático", desc: "Alojamiento estático gratuito directamente desde repositorios de Git.", tag: "Gratis" },
+            { name: "Vercel", category: "estatico", type: "Estático", desc: "Plataforma líder para Next.js, React y frontend moderno.", tag: "Freemium" },
+            { name: "Netlify", category: "estatico", type: "Estático", desc: "Automatización de builds Jamstack y Serverless Functions.", tag: "Freemium" },
+            { name: "Cloudflare Pages", category: "estatico", type: "Estático", desc: "Despliegues estáticos sobre la red global de Cloudflare.", tag: "Gratis" },
+            { name: "Render Static", category: "estatico", type: "Estático", desc: "Hosting estático ultrarrápido con CDN y SSL automático.", tag: "Gratis" },
+            { name: "Firebase Hosting", category: "estatico", type: "Estático", desc: "Hosting de Google para apps de una sola página (SPA).", tag: "Freemium" },
+            { name: "Surge.sh", category: "estatico", type: "Estático", desc: "Publicación estática mediante línea de comandos en un comando.", tag: "Freemium" },
+            { name: "Fleek", category: "estatico", type: "Estático", desc: "Hosting de sitios estáticos sobre IPFS y la Web3.", tag: "Freemium" },
+            { name: "Stormkit", category: "estatico", type: "Estático", desc: "Infraestructura para aplicaciones JavaScript frontend.", tag: "Freemium" },
+            { name: "AWS Amplify", category: "estatico", type: "Estático", desc: "Alojamiento estático y backend gestionado en Amazon Web Services.", tag: "De Pago" },
+            { name: "Azure Static Web Apps", category: "estatico", type: "Estático", desc: "Servicio de Microsoft para sitios estáticos con API serverless.", tag: "Freemium" },
+            { name: "Fastly", category: "estatico", type: "Estático", desc: "Red de entrega de contenidos y computación de borde.", tag: "De Pago" },
+
+            // Free Traditional
+            { name: "InfinityFree", category: "gratuito", type: "Gratuito", desc: "Hosting PHP/MySQL con espacio ilimitado sin publicidad.", tag: "Gratis" },
+            { name: "AwardSpace", category: "gratuito", type: "Gratuito", desc: "Hosting gratuito con instalador de WordPress en 1 clic.", tag: "Gratis" },
+            { name: "ByetHost", category: "gratuito", type: "Gratuito", desc: "Servicio con panel VistaPanel y soporte FTP/MySQL.", tag: "Gratis" },
+            { name: "Freehostia", category: "gratuito", type: "Gratuito", desc: "Plan Chocolate gratuito con balanceador de carga.", tag: "Gratis" },
+            { name: "x10Hosting", category: "gratuito", type: "Gratuito", desc: "Hosting cPanel completo gratuito con recursos flexibles.", tag: "Gratis" },
+            { name: "Freehosting.com", category: "gratuito", type: "Gratuito", desc: "Alojamiento no de pago para sitios livianos con cPanel.", tag: "Gratis" },
+            { name: "ProFreeHost", category: "gratuito", type: "Gratuito", desc: "Ancho de banda ilimitado y servidores de alto rendimiento sin costo.", tag: "Gratis" },
+            { name: "GoogieHost", category: "gratuito", type: "Gratuito", desc: "Hosting gratuito administrado con cPanel y certificado SSL.", tag: "Gratis" },
+            { name: "FreeWebHostingArea", category: "gratuito", type: "Gratuito", desc: "Servicio activo desde 2005 con soporte de PHP 8 y MySQL.", tag: "Gratis" },
+            { name: "FreeHostingNoAds", category: "gratuito", type: "Gratuito", desc: "Hosting gratis sin banners publicitarios obligatorios.", tag: "Gratis" },
+
+            // Shared & WordPress
+            { name: "Hostinger", category: "compartido", type: "Compartido", desc: "Panel hPanel optimizado, gran velocidad y bajos costos.", tag: "De Pago" },
+            { name: "SiteGround", category: "compartido", type: "Compartido", desc: "Infraestructura Google Cloud y soporte de primer nivel.", tag: "De Pago" },
+            { name: "Bluehost", category: "compartido", type: "Compartido", desc: "Hosting recomendado oficialmente por la comunidad de WordPress.", tag: "De Pago" },
+            { name: "HostGator", category: "compartido", type: "Compartido", desc: "Planes económicos tradicionales con cPanel y dominio gratis.", tag: "De Pago" },
+            { name: "A2 Hosting", category: "compartido", type: "Compartido", desc: "Servidores Turbo optimizados para velocidad en PHP y WordPress.", tag: "De Pago" },
+            { name: "DreamHost", category: "compartido", type: "Compartido", desc: "Alojamiento WordPress con almacenamiento SSD rápido.", tag: "De Pago" },
+            { name: "InMotion Hosting", category: "compartido", type: "Compartido", desc: "Excelente rendimiento para negocios y empresas con cPanel.", tag: "De Pago" },
+            { name: "Namecheap", category: "compartido", type: "Compartido", desc: "Hosting económico con certificado SSL y registros de dominio.", tag: "De Pago" },
+            { name: "GoDaddy", category: "compartido", type: "Compartido", desc: "El registrador de dominios y hosting más masivo globalmente.", tag: "De Pago" },
+            { name: "GreenGeeks", category: "compartido", type: "Compartido", desc: "Hosting ecológico alimentado por energía renovable limpia.", tag: "De Pago" },
+            { name: "FastComet", category: "compartido", type: "Compartido", desc: "Cloud SSD Hosting con almacenamiento ultra rápido.", tag: "De Pago" },
+            { name: "HostPapa", category: "compartido", type: "Compartido", desc: "Hosting enfocado en pequeñas y medianas empresas.", tag: "De Pago" },
+
+            // VPS & Cloud
+            { name: "AWS EC2", category: "vps", type: "Cloud VPS", desc: "Instancias de cómputo en la nube elástica de Amazon.", tag: "De Pago" },
+            { name: "DigitalOcean", category: "vps", type: "Cloud VPS", desc: "Droplets VPS sencillos y amigables para desarrolladores.", tag: "De Pago" },
+            { name: "Linode (Akamai)", category: "vps", type: "Cloud VPS", desc: "Servidores VPS Linux de alto rendimiento y precio transparente.", tag: "De Pago" },
+            { name: "Vultr", category: "vps", type: "Cloud VPS", desc: "Despliegue de computación SSD en más de 30 ubicaciones mundiales.", tag: "De Pago" },
+            { name: "Hetzner Cloud", category: "vps", type: "Cloud VPS", desc: "Servidores alemanes con excelente precio por GB de RAM.", tag: "De Pago" },
+            { name: "Scaleway", category: "vps", type: "Cloud VPS", desc: "Ecosistema de nube europeo completo y sustentable.", tag: "De Pago" },
+            { name: "OVHcloud", category: "vps", type: "Cloud VPS", desc: "Líder europeo en servidores dedidos y VPS de alto ancho de banda.", tag: "De Pago" },
+            { name: "GCP Compute Engine", category: "vps", type: "Cloud VPS", desc: "Máquinas virtuales ejecutadas en la infraestructura de Google.", tag: "De Pago" },
+            { name: "Microsoft Azure VM", category: "vps", type: "Cloud VPS", desc: "Nube empresarial de Microsoft para computación Linux y Windows.", tag: "De Pago" },
+            { name: "UpCloud", category: "vps", type: "Cloud VPS", desc: "Almacenamiento MaxIOPS ultra rápido para servidores VPS.", tag: "De Pago" },
+            { name: "Kamatera", category: "vps", type: "Cloud VPS", desc: "VPS en la nube personalizable con escalado instantáneo.", tag: "De Pago" },
+            { name: "Cloudways", category: "vps", type: "Cloud VPS", desc: "Panel administrado para gestionar DigitalOcean, AWS o Vultr.", tag: "De Pago" },
+            { name: "Contabo", category: "vps", type: "Cloud VPS", desc: "Servidores VPS con enorme capacidad de RAM a costos reducidos.", tag: "De Pago" },
+
+            // PaaS & Backend
+            { name: "Heroku", category: "paas", type: "PaaS", desc: "Plataforma PaaS clásica para despliegue fluido de aplicaciones.", tag: "De Pago" },
+            { name: "Render", category: "paas", type: "PaaS", desc: "Alternativa moderna a Heroku para Node, Python, Go y Docker.", tag: "Freemium" },
+            { name: "Railway", category: "paas", type: "PaaS", desc: "Despliegue rápido de código y bases de datos con experiencia moderna.", tag: "Freemium" },
+            { name: "Fly.io", category: "paas", type: "PaaS", desc: "Ejecuta contenedores Docker cerca de tus usuarios globalmente.", tag: "Freemium" },
+            { name: "Supabase", category: "paas", type: "Backend", desc: "Alternativa Open Source a Firebase con PostgreSQL.", tag: "Freemium" },
+            { name: "Koyeb", category: "paas", type: "PaaS", desc: "Plataforma Serverless para desplegar apps en segundos.", tag: "Freemium" },
+            { name: "Northflank", category: "paas", type: "PaaS", desc: "Plataforma para contenedores, microservicios y bases de datos.", tag: "Freemium" },
+            { name: "PythonAnywhere", category: "paas", type: "PaaS", desc: "Hosting y entorno de ejecución especializado en Python y Django.", tag: "Freemium" },
+            { name: "Platform.sh", category: "paas", type: "PaaS", desc: "Plataforma en la nube para aplicaciones web PHP, Node y Python.", tag: "De Pago" },
+            { name: "Deno Deploy", category: "paas", type: "PaaS", desc: "Ejecución de JavaScript y TypeScript en los nodos de borde.", tag: "Freemium" },
+            { name: "Replit", category: "paas", type: "IDE / Hosting", desc: "Desarrollo y alojamiento directo de bots y apps desde el navegador.", tag: "Freemium" },
+
+            // Dedicated
+            { name: "OVHcloud Bare Metal", category: "dedicado", type: "Dedicado", desc: "Servidores físicos dedicados de alta densidad en Europa y América.", tag: "De Pago" },
+            { name: "Hetzner Dedicated", category: "dedicado", type: "Dedicado", desc: "Subastas y servidores dedicados sin administradores compartidos.", tag: "De Pago" },
+            { name: "Liquid Web", category: "dedicado", type: "Dedicado", desc: "Servidores dedicados totalmente administrados con soporte VIP.", tag: "De Pago" },
+            { name: "PhoenixNAP", category: "dedicado", type: "Dedicado", desc: "Infraestructura Bare Metal con aprovisionamiento automatizado.", tag: "De Pago" },
+            { name: "Leaseweb", category: "dedicado", type: "Dedicado", desc: "Servidores dedicados con potente ancho de banda para streaming.", tag: "De Pago" },
+            { name: "IBM Cloud Bare Metal", category: "dedicado", type: "Dedicado", desc: "Servidores dedicados de grado corporativo con seguridad avanzada.", tag: "De Pago" },
+            { name: "Latitude.sh", category: "dedicado", type: "Dedicado", desc: "Plataforma Bare Metal en la nube para desarrolladores.", tag: "De Pago" },
+
+            // Web Builders
+            { name: "WordPress.com", category: "creadores", type: "Creador Web", desc: "Plataforma SaaS oficial para blogs y webs administradas.", tag: "Freemium" },
+            { name: "Wix", category: "creadores", type: "Creador Web", desc: "Constructor web visual arrastrar y soltar todo en uno.", tag: "Freemium" },
+            { name: "Squarespace", category: "creadores", type: "Creador Web", desc: "Diseño estético de alto nivel para sitios web y portafolios.", tag: "De Pago" },
+            { name: "Webflow", category: "creadores", type: "Creador Web", desc: "Diseño visual profesional que genera código limpio en vivo.", tag: "Freemium" },
+            { name: "Shopify", category: "creadores", type: "E-Commerce", desc: "La plataforma líder mundial para tiendas de comercio electrónico.", tag: "De Pago" },
+            { name: "Framer", category: "creadores", type: "Creador Web", desc: "Diseño e iteración interactiva directa a sitio web publicado.", tag: "Freemium" },
+            { name: "Carrd", category: "creadores", type: "Creador Web", desc: "Construcción sencilla de sitios landing page de una sola página.", tag: "Freemium" },
+            { name: "Weebly", category: "creadores", type: "Creador Web", desc: "Constructor web sencillo propiedad de Square para tiendas.", tag: "Freemium" },
+            { name: "Jimdo", category: "creadores", type: "Creador Web", desc: "Creador de sitios asistido por Inteligencia Artificial.", tag: "Freemium" }
+        ];
+
+        // Slide Navigation Logic
+        function updateSlide() {
+            slides.forEach((slide, idx) => {
+                if (idx === currentSlide) {
+                    slide.classList.remove('opacity-0', 'pointer-events-none', 'z-0');
+                    slide.classList.add('opacity-100', 'z-10');
+                } else {
+                    slide.classList.remove('opacity-100', 'z-10');
+                    slide.classList.add('opacity-0', 'pointer-events-none', 'z-0');
+                }
+            });
+
+            // Update bottom bar controls
+            document.getElementById('slideCounter').innerText = `${currentSlide + 1} / ${totalSlides}`;
+            document.getElementById('progressBar').style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+
+            document.getElementById('btnPrev').disabled = (currentSlide === 0);
+            document.getElementById('btnNext').disabled = (currentSlide === totalSlides - 1);
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        function goToSlide(index) {
+            if (index >= 0 && index < totalSlides) {
+                currentSlide = index;
+                updateSlide();
+                closeIndexModal();
+            }
+        }
+
+        // Modal Index Functions
+        function openIndexModal() {
+            const modal = document.getElementById('indexModal');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.classList.add('opacity-100');
+        }
+
+        function closeIndexModal() {
+            const modal = document.getElementById('indexModal');
+            modal.classList.remove('opacity-100');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        function renderIndexModal() {
+            const listContainer = document.getElementById('indexList');
+            listContainer.innerHTML = '';
+            slideTitles.forEach((title, idx) => {
                 const btn = document.createElement('button');
-                btn.className = `w-full text-left p-3 rounded-xl border text-xs font-medium flex items-center justify-between transition-all ${
-                    index + 1 === currentSlide 
-                    ? 'bg-sky-50 border-sky-300 text-sky-700 font-bold' 
-                    : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
+                btn.className = `w-full text-left p-2.5 rounded-xl border transition-all flex items-center justify-between ${
+                    idx === currentSlide 
+                        ? 'bg-sky-50 border-sky-300 text-sky-800 font-bold' 
+                        : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
                 }`;
+                btn.onclick = () => goToSlide(idx);
                 btn.innerHTML = `
                     <span>${title}</span>
-                    <span class="text-[10px] text-slate-400">Diapositiva ${index + 1}</span>
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
                 `;
-                btn.addEventListener('click', () => {
-                    goToSlide(index + 1);
-                    closeModal();
-                });
-                modalGrid.appendChild(btn);
+                listContainer.appendChild(btn);
+            });
+            lucide.createIcons();
+        }
+
+        // Directory Render & Filter System
+        let activeCategory = 'all';
+        let searchQuery = '';
+
+        function renderDirectory() {
+            const grid = document.getElementById('dirGrid');
+            const counter = document.getElementById('dirCounter');
+            
+            const filtered = hostingDatabase.filter(item => {
+                const matchesCat = (activeCategory === 'all' || item.category === activeCategory);
+                const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                                      item.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                      item.desc.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchesCat && matchesSearch;
             });
 
-            function updateUI() {
-                // Hide all slides
-                slides.forEach((slide) => {
-                    slide.classList.add('hidden');
-                    slide.classList.remove('flex', 'slide-enter');
-                });
+            counter.innerText = `Mostrando ${filtered.length} de ${hostingDatabase.length}`;
+            grid.innerHTML = '';
 
-                // Show current slide
-                const activeSlide = document.querySelector(`.slide-item[data-slide="${currentSlide}"]`);
-                if (activeSlide) {
-                    activeSlide.classList.remove('hidden');
-                    activeSlide.classList.add('flex', 'slide-enter');
-                }
-
-                // Update counter & progress bar
-                currentSlideNum.textContent = currentSlide;
-                const progressPercent = (currentSlide / totalSlides) * 100;
-                progressBar.style.width = `${progressPercent}%`;
-
-                // Update prev/next button states
-                prevBtn.disabled = currentSlide === 1;
-                nextBtn.disabled = currentSlide === totalSlides;
-
-                // Update Modal Grid Highlight
-                const gridButtons = modalGrid.querySelectorAll('button');
-                gridButtons.forEach((btn, idx) => {
-                    if (idx + 1 === currentSlide) {
-                        btn.className = 'w-full text-left p-3 rounded-xl border text-xs flex items-center justify-between transition-all bg-sky-50 border-sky-300 text-sky-700 font-bold';
-                    } else {
-                        btn.className = 'w-full text-left p-3 rounded-xl border text-xs flex items-center justify-between transition-all bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100';
-                    }
-                });
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-8 text-center text-slate-400 text-xs">
+                        No se encontraron proveedores que coincidan con la búsqueda.
+                    </div>
+                `;
+                return;
             }
 
-            function goToSlide(slideNum) {
-                if (slideNum >= 1 && slideNum <= totalSlides) {
-                    currentSlide = slideNum;
-                    updateUI();
-                }
-            }
+            filtered.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-slate-50 border border-slate-200 rounded-xl p-3 flex flex-col justify-between hover:border-sky-300 transition-colors shadow-2xs";
+                
+                let badgeColor = "bg-slate-200 text-slate-700";
+                if (item.tag === "Gratis") badgeColor = "bg-emerald-100 text-emerald-800";
+                if (item.tag === "Freemium") badgeColor = "bg-sky-100 text-sky-800";
+                if (item.tag === "De Pago") badgeColor = "bg-indigo-100 text-indigo-800";
 
-            prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
-            nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
-
-            // Modal Handlers
-            function openModal() {
-                indexModal.classList.remove('opacity-0', 'pointer-events-none');
-                modalContent.classList.remove('translate-y-full', 'md:translate-y-4');
-                modalContent.classList.add('translate-y-0');
-            }
-
-            function closeModal() {
-                indexModal.classList.add('opacity-0', 'pointer-events-none');
-                modalContent.classList.remove('translate-y-0');
-                modalContent.classList.add('translate-y-full', 'md:translate-y-4');
-            }
-
-            openModalBtn.addEventListener('click', openModal);
-            counterBtn.addEventListener('click', openModal);
-            closeModalBtn.addEventListener('click', closeModal);
-            indexModal.addEventListener('click', (e) => {
-                if (e.target === indexModal) closeModal();
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <h4 class="font-bold text-slate-900 text-xs sm:text-sm">${item.name}</h4>
+                            <span class="text-[10px] px-1.5 py-0.5 rounded font-semibold ${badgeColor}">${item.tag}</span>
+                        </div>
+                        <p class="text-[11px] text-slate-600 line-clamp-2 leading-relaxed mb-2">${item.desc}</p>
+                    </div>
+                    <div class="text-[10px] text-slate-400 font-medium pt-1 border-t border-slate-200 flex items-center justify-between">
+                        <span>Categoría: ${item.type}</span>
+                    </div>
+                `;
+                grid.appendChild(card);
             });
+        }
 
-            // Keyboard Navigation
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'ArrowRight' || e.key === ' ') {
-                    goToSlide(currentSlide + 1);
+        // Event Listeners Initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            updateSlide();
+            renderIndexModal();
+            renderDirectory();
+
+            // Keyboard navigation
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' || e.key === 'Space') {
+                    nextSlide();
                 } else if (e.key === 'ArrowLeft') {
-                    goToSlide(currentSlide - 1);
-                } else if (e.key === 'Escape') {
-                    closeModal();
+                    prevSlide();
                 }
             });
 
-            // Touch Swipe Logic (Prevents vertical scrolling from triggering slide change)
+            // Touch Swipe handling (horizontal only)
             let touchStartX = 0;
             let touchStartY = 0;
             let touchEndX = 0;
             let touchEndY = 0;
 
-            const slideContainer = document.getElementById('slideContainer');
+            const mainContainer = document.querySelector('main');
 
-            slideContainer.addEventListener('touchstart', (e) => {
+            mainContainer.addEventListener('touchstart', (e) => {
                 touchStartX = e.changedTouches[0].screenX;
                 touchStartY = e.changedTouches[0].screenY;
             }, { passive: true });
 
-            slideContainer.addEventListener('touchend', (e) => {
+            mainContainer.addEventListener('touchend', (e) => {
                 touchEndX = e.changedTouches[0].screenX;
                 touchEndY = e.changedTouches[0].screenY;
                 handleSwipe();
@@ -905,20 +865,44 @@
                 const diffX = touchEndX - touchStartX;
                 const diffY = touchEndY - touchStartY;
 
-                // Threshold: horizontal movement must exceed 50px and be significantly larger than vertical movement
-                if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY) * 1.5) {
+                // Check horizontal swipe threshold and ensure horizontal > vertical swipe
+                if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY) * 1.5) {
                     if (diffX < 0) {
-                        // Swipe Left -> Next
-                        goToSlide(currentSlide + 1);
+                        nextSlide();
                     } else {
-                        // Swipe Right -> Prev
-                        goToSlide(currentSlide - 1);
+                        prevSlide();
                     }
                 }
             }
 
-            // Initial UI Setup
-            updateUI();
+            // Directory Filter buttons
+            document.querySelectorAll('.dir-filter').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.dir-filter').forEach(b => {
+                        b.classList.remove('bg-sky-600', 'text-white', 'border-sky-600');
+                        b.classList.add('bg-slate-100', 'text-slate-700', 'border-slate-200');
+                    });
+                    e.target.classList.remove('bg-slate-100', 'text-slate-700', 'border-slate-200');
+                    e.target.classList.add('bg-sky-600', 'text-white', 'border-sky-600');
+
+                    activeCategory = e.target.getAttribute('data-cat');
+                    renderDirectory();
+                });
+            });
+
+            // Directory Search Input
+            const searchInput = document.getElementById('dirSearch');
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    searchQuery = e.target.value;
+                    renderDirectory();
+                });
+            }
+
+            // Close modal on outer click
+            document.getElementById('indexModal').addEventListener('click', (e) => {
+                if (e.target.id === 'indexModal') closeIndexModal();
+            });
         });
     </script>
 </body>
